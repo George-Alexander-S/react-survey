@@ -21,7 +21,9 @@ function Survey() {
   const [savedForms, setSavedForm] = useState([])
 
   const submitForm = () => {
-    setSavedForm(formData)
+    let newArray = [...savedForms]
+    newArray.push(formData)
+    setSavedForm(newArray)
     setFormData({
       colour: "",
       timeSpent: [],
@@ -30,6 +32,10 @@ function Survey() {
       email: ""
     })
   }
+
+  useEffect(() => {
+    console.log(savedForms)
+  }, [submitForm])
 
   const handleSubmit = (event) => {
     console.log(formData)
@@ -46,9 +52,6 @@ function Survey() {
     handleChange(event)
   }
 
-  useEffect(() => {
-    console.log(checkedBoxes)
-  }, [handleCheckBox])
 
 
   const handleChange = (event) => {
@@ -68,24 +71,15 @@ function Survey() {
     }
     else {
       setFormData({ ...formData, [event.target.name]: event.target.value });
-      console.log([event.target.name])
-      console.log([event.target.value])
     }
   };
-
-  useEffect(() => {
-    console.log(formData)
-  }, [handleChange])
-
 
   return (
     <main className="survey">
       <section className={`survey__list ${open ? "open" : ""}`}>
         <h2>Answers list</h2>
         {/* answers should go here */}
-        <AnswersItem
-          answerItem={formData}
-        />
+        <AnswersList answersList={savedForms}/>
       </section>
       <section className="survey__form">{/* a form should be here */}
         <form className="form" onSubmit={handleSubmit}>
