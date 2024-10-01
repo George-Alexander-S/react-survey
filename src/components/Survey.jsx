@@ -6,11 +6,10 @@ import AnswersItem from "./AnswersItem";
 function Survey() {
   const [open, setOpen] = useState(false); //Ignore this state
 
-  // const [textData, setTextData] = useState("")
-
   const [checkedBoxes, setCheckedBoxes] = useState([])
 
   const [formData, setFormData] = useState({
+    id: null,
     colour: "",
     timeSpent: [],
     review: "",
@@ -20,10 +19,18 @@ function Survey() {
 
   const [savedForms, setSavedForm] = useState([])
 
-  const submitForm = () => {
-    let newArray = [...savedForms]
-    newArray.push(formData)
-    setSavedForm(newArray)
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (formData.id) {
+      setSavedForm((prevSaved) => 
+      prevSaved.map((answer) => 
+      answer.id === formData.id ? formData : answer))
+    }
+    else {
+      const newAnswer = {...formData, id: savedForms.length + 1}
+      setSavedForm((prevSaved) => [...prevSaved, newAnswer])
+    }
+    event.target.reset()
     setFormData({
       colour: "",
       timeSpent: [],
@@ -31,16 +38,6 @@ function Survey() {
       username: "",
       email: ""
     })
-  }
-
-  useEffect(() => {
-    console.log(savedForms)
-  }, [submitForm])
-
-  const handleSubmit = (event) => {
-    console.log(formData)
-    event.preventDefault();
-    event.target.reset() //This was handy
   };
 
   const handleCheckBox = (event) => {
@@ -51,8 +48,6 @@ function Survey() {
     setCheckedBoxes(newArray)
     handleChange(event)
   }
-
-
 
   const handleChange = (event) => {
     if (event.target.type === "checkbox") {
@@ -74,12 +69,20 @@ function Survey() {
     }
   };
 
+  const editHandler = (id) => {
+    console.log("Editing id"+id)
+    const editing = savedForms.find((form) => form.id === id)
+    console.log(editing)
+    // setEditData(editing)
+    setFormData(editing)
+  }
+
   return (
     <main className="survey">
       <section className={`survey__list ${open ? "open" : ""}`}>
         <h2>Answers list</h2>
         {/* answers should go here */}
-        <AnswersList answersList={savedForms}/>
+        <AnswersList answersList={savedForms} editHandler={editHandler}/>
       </section>
       <section className="survey__form">{/* a form should be here */}
         <form className="form" onSubmit={handleSubmit}>
@@ -89,34 +92,54 @@ function Survey() {
             {/* <!-- Radio inputs go here --> */}
             <ul>
               <li>
-                <input id="colour-one" type="radio" name="colour" value="1"
-                  onChange={handleChange}
+                <input 
+                id="colour-one" 
+                type="radio" 
+                name="colour" 
+                value="1"
+                checked={formData.colour === "1"? true : undefined}
+                onChange={handleChange}
                 />
                 <label htmlFor="colour-one"
                 >1</label
                 >
               </li>
               <li>
-                <input id="colour-two" type="radio" name="colour" value="2"
-                  onChange={handleChange}
+                <input 
+                id="colour-two" 
+                type="radio" 
+                name="colour" 
+                value="2"
+                checked={formData.colour === "2"? true : undefined}
+                onChange={handleChange}
                 /><label
                   htmlFor="colour-two"
                 >2</label
                 >
               </li>
               <li>
-                <input id="colour-three" type="radio" name="colour" value="3"
-                  onChange={handleChange}
+                <input 
+                id="colour-three" 
+                type="radio" 
+                name="colour" 
+                value="3"
+                checked={formData.colour === "3"? true : undefined}
+                onChange={handleChange}
                 /><label
                   htmlFor="colour-three"
                 >3</label
                 >
               </li>
               <li>
-                <input id="colour-four" type="radio" name="colour" value="4"
-                  onChange={handleChange}
+                <input 
+                id="colour-four" 
+                type="radio" 
+                name="colour" 
+                value="4"
+                checked={formData.colour === "4"? true : undefined}
+                onChange={handleChange}
                 /><label
-                  htmlFor="colour-four"
+                htmlFor="colour-four"
                 >4</label
                 >
               </li>
@@ -133,6 +156,7 @@ function Survey() {
                     name="spendtime"
                     type="checkbox"
                     value="swimming"
+                    checked={formData.timeSpent?.includes("swimming")? true : undefined}
                     onChange={handleCheckBox}
                   />Swimming</label
                 >
@@ -144,6 +168,7 @@ function Survey() {
                     name="spendtime"
                     type="checkbox"
                     value="bathing"
+                    checked={formData.timeSpent?.includes("bathing")? true : undefined}
                     onChange={handleCheckBox}
                   />Bathing</label
                 >
@@ -155,6 +180,7 @@ function Survey() {
                     name="spendtime"
                     type="checkbox"
                     value="chatting"
+                    checked={formData.timeSpent?.includes("chatting")? true : undefined}
                     onChange={handleCheckBox}
                   />Chatting</label
                 >
@@ -166,6 +192,7 @@ function Survey() {
                     name="spendtime"
                     type="checkbox"
                     value="noTime"
+                    checked={formData.timeSpent?.includes("noTime")? true : undefined}
                     onChange={handleCheckBox}
                   />I don't like to
                   spend time with it</label
@@ -200,7 +227,7 @@ function Survey() {
             className="form__submit"
             type="submit"
             value="Submit Survey!"
-            onClick={() => submitForm()}
+            // onClick={() => submitForm()}
           />
         </form>
       </section>
