@@ -225,7 +225,6 @@ function Survey() {
             className="form__submit"
             type="submit"
             value="Submit Survey!"
-            // onClick={() => submitForm()}
           />
         </form>
       </section>
