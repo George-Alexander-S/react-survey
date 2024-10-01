@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { useEffect } from "react";
 import AnswersList from "./AnswersList";
-import AnswersItem from "./AnswersItem";
 
 function Survey() {
   const [open, setOpen] = useState(false); //Ignore this state
