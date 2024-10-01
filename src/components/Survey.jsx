@@ -22,11 +22,19 @@ function Survey() {
 
   const submitForm = () => {
     setSavedForm(formData)
+    setFormData({
+      colour: "",
+      timeSpent: [],
+      review: "",
+      username: "",
+      email: ""
+    })
   }
 
   const handleSubmit = (event) => {
     console.log(formData)
     event.preventDefault();
+    event.target.reset() //This was handy
   };
 
   const handleCheckBox = (event) => {
@@ -39,7 +47,7 @@ function Survey() {
   }
 
   useEffect(() => {
-    console.log(checkedBoxes)   
+    console.log(checkedBoxes)
   }, [handleCheckBox])
 
 
@@ -53,15 +61,16 @@ function Survey() {
       else {
         newArray.push(event.target.value)
       }
-      setFormData({...formData,
+      setFormData({
+        ...formData,
         timeSpent: newArray
       })
     }
     else {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-    console.log([event.target.name])
-    console.log([event.target.value])
-  }
+      setFormData({ ...formData, [event.target.name]: event.target.value });
+      console.log([event.target.name])
+      console.log([event.target.value])
+    }
   };
 
   useEffect(() => {
@@ -74,9 +83,8 @@ function Survey() {
       <section className={`survey__list ${open ? "open" : ""}`}>
         <h2>Answers list</h2>
         {/* answers should go here */}
-        <AnswersItem 
-        answerItem={formData}
-        
+        <AnswersItem
+          answerItem={formData}
         />
       </section>
       <section className="survey__form">{/* a form should be here */}
@@ -88,15 +96,15 @@ function Survey() {
             <ul>
               <li>
                 <input id="colour-one" type="radio" name="colour" value="1"
-                onChange={handleChange}
+                  onChange={handleChange}
                 />
                 <label htmlFor="colour-one"
                 >1</label
                 >
               </li>
               <li>
-                <input id="colour-two" type="radio" name="colour" value="2" 
-                onChange={handleChange}
+                <input id="colour-two" type="radio" name="colour" value="2"
+                  onChange={handleChange}
                 /><label
                   htmlFor="colour-two"
                 >2</label
@@ -104,7 +112,7 @@ function Survey() {
               </li>
               <li>
                 <input id="colour-three" type="radio" name="colour" value="3"
-                onChange={handleChange}
+                  onChange={handleChange}
                 /><label
                   htmlFor="colour-three"
                 >3</label
@@ -112,7 +120,7 @@ function Survey() {
               </li>
               <li>
                 <input id="colour-four" type="radio" name="colour" value="4"
-                onChange={handleChange}
+                  onChange={handleChange}
                 /><label
                   htmlFor="colour-four"
                 >4</label
@@ -126,7 +134,7 @@ function Survey() {
             <ul>
               <li>
                 <label
-                  ><input
+                ><input
                     id="1"
                     name="spendtime"
                     type="checkbox"
@@ -137,36 +145,36 @@ function Survey() {
               </li>
               <li>
                 <label
-                  ><input
-                  id="2"
-                  name="spendtime"
-                  type="checkbox"
-                  value="bathing"
-                  onChange={handleCheckBox}
+                ><input
+                    id="2"
+                    name="spendtime"
+                    type="checkbox"
+                    value="bathing"
+                    onChange={handleCheckBox}
                   />Bathing</label
                 >
               </li>
               <li>
                 <label
-                  ><input
+                ><input
                     id="3"
                     name="spendtime"
                     type="checkbox"
                     value="chatting"
                     onChange={handleCheckBox}
-                    />Chatting</label
+                  />Chatting</label
                 >
               </li>
               <li>
                 <label
-                  ><input
+                ><input
                     id="4"
-                    name="spendtime" 
+                    name="spendtime"
                     type="checkbox"
                     value="noTime"
                     onChange={handleCheckBox}
-                    />I don't like to
-                    spend time with it</label
+                  />I don't like to
+                  spend time with it</label
                 >
               </li>
             </ul>
@@ -185,20 +193,20 @@ function Survey() {
               name="username"
               value={formData.text}
               onChange={handleChange}
-              /></label
+            /></label
           ><label
           >Leave us your email pretty please??<input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              /></label
+            /></label
           >
           <input
-          className="form__submit" 
-          type="submit" 
-          value="Submit Survey!" 
-          onClick={() => submitForm()}
+            className="form__submit"
+            type="submit"
+            value="Submit Survey!"
+            onClick={() => submitForm()}
           />
         </form>
       </section>
